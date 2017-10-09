@@ -1,0 +1,28 @@
+variables:
+	{s.%player%} = 0
+    {afk.%player%} = 0
+
+command /afk:
+	permission: com.rejszpat.awayfromkeyboard
+    permission message: &7Nie masz dostepu do tej komendy.
+	trigger:
+    	{afk.%player%} is 0:
+        	set {afk.%player%} to 1
+            send "&e%player% &7jest teraz AFK."
+        {afk.%player%} is 1:
+        	set {afk.%player%} to 0
+            send "&e%player% &7nie jest juz AFK."
+on any move:
+	set {s.%player%} to 1
+    wait 5 second
+    set {s.%player%} to 0
+every 5 second:
+	loop all players:
+    	loop 25 times:
+    		if {s.%loop-player%} is 0:
+        		wait 5 second
+        if {s.%loop-player%} is 0:
+        	{afk.%player%} is 0:
+        		kick player due to "&7A co to ma byc? AFK?"
+on quit:
+	set {s.%player%} to 0
